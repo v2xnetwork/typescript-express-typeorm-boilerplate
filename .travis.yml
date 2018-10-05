@@ -1,0 +1,31 @@
+language: node_js
+
+node_js:
+  - "8"
+
+cache:
+  directories:
+    - "node_modules"
+
+services:
+  - postgresql
+env:
+  global:
+    - TEST_DB_HOST=localhost
+    - TEST_DB_PORT=5432
+    - TEST_DB_USERNAME=postgres
+    - TEST_DB_PASSWORD=
+    - TEST_DB_NAME=travis_ci_test
+
+install:
+  - npm install
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+
+script:
+  - npm run build
+  - npm run test
+
+notifications:
+  email: false
